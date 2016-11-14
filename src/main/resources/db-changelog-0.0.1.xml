@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog 	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+					xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+					xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+					xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
+    									http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+	<changeSet id="create-sequence-0.0.1-1" author="iaddison">
+		<createSequence incrementBy="1" sequenceName="hibernate_sequence" startValue="1" />		
+	</changeSet>
+	
+	<changeSet id="create-tables-0.0.1-1" author="iaddison">	
+		<createTable tableName="TICKET_TYPE">
+			<column name="ID" type="bigint" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="TYPE" type="varchar(255)">
+				<constraints nullable="true"></constraints>
+			</column>			
+			<column name="ICON" type="varchar(255)">
+				<constraints nullable="false"></constraints>
+			</column>									
+		</createTable>
+		
+		<createTable tableName="ABSTRACT_TASK">
+			<column name="ABSTRACT_TASK_ID" type="bigint" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="VERSION" type="bigint">
+				<constraints nullable="false"></constraints>
+			</column>
+			<column name="DESCRIPTION" type="varchar(2000)">
+				<constraints nullable="true"></constraints>
+			</column>			
+			<column name="TITLE" type="varchar(255)">
+				<constraints nullable="false"></constraints>
+			</column>									
+		</createTable>
+		
+		<createTable tableName="TICKET">
+			<column name="ABSTRACT_TASK_ID" type="bigint" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="LIST_ORDER" type="integer" />
+			<column name="TITLE" type="integer" />	
+			<column name="LOCATION" type="varchar(255)" />	
+		</createTable>
+		
+		<createTable tableName="BUG">
+			<column name="ABSTRACT_TASK_ID" type="bigint" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false" />
+			</column>									
+		</createTable>
+		
+		<createTable tableName="USER_STORY">
+			<column name="ABSTRACT_TASK_ID" type="bigint" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false" />
+			</column>									
+		</createTable>
+		
+		<createTable tableName="USER_STORY_ACCEPTANCE_CRITERIA">
+			<column name="USERSTORY_ABSTRACT_TASK_ID" type="bigint" autoIncrement="true">
+				<constraints nullable="false" />
+			</column>
+			<column name="ACCEPTANCECRITERIA" type="varchar(2000)">
+				<constraints nullable="true"></constraints>
+			</column>
+		</createTable>
+		
+		<createTable tableName="SUBTASK">
+			<column name="ABSTRACT_TASK_ID" type="bigint" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="ID" type="bigint" />
+			<column name="STATE" type="varchar(255)" />
+			<column name="ESTIMATE" type="integer" />
+		</createTable>
+	</changeSet>
+	
+	<changeSet id="dataload-0.0.1-1" author="iaddison">
+		<insert tableName="TICKET_TYPE">
+			<column name="ID" valueNumeric="1"/>
+			<column name="TYPE" value="Bug" />
+			<column name="ICON" value="bug" /> 					
+		</insert>
+		<rollback>
+			<delete tableName="TICKET_TYPE">
+				<where>TYPE = 'Bug'</where>
+			</delete>
+		</rollback>
+		<insert tableName="TICKET_TYPE">
+			<column name="ID" valueNumeric="2"/>
+			<column name="TYPE" value="User Story" />
+			<column name="ICON" value="story" /> 					
+		</insert>
+		<rollback>
+			<delete tableName="TICKET_TYPE">
+				<where>TYPE = 'User Story'</where>
+			</delete>
+		</rollback>
+	</changeSet>
+	
+</databaseChangeLog>
